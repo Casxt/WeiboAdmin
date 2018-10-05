@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package weiboadmin.admin.boundary;
+package weiboadmin.audit.boundary;
 
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -21,38 +18,34 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import weiboadmin.admin.control.AdminService;
-import weiboadmin.admin.entity.Administrator;
+import weiboadmin.audit.entity.User;
 import weiboadmin.AbstractFacade;
-
 /**
  *
  * @author Surface
  */
 @Stateless
-@Path("administrator")
-public class AdministratorFacadeREST extends AbstractFacade<Administrator> {
+@Path("user")
+public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "weiboadmin_weiboadmin_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-    @EJB
-    AdminService adminService;
 
-    public AdministratorFacadeREST() {
-        super(Administrator.class);
+    public UserFacadeREST() {
+        super(User.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Administrator entity) {
+    public void create(User entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Administrator entity) {
+    public void edit(@PathParam("id") Long id, User entity) {
         super.edit(entity);
     }
 
@@ -63,31 +56,24 @@ public class AdministratorFacadeREST extends AbstractFacade<Administrator> {
     }
 
     @GET
-    @Path("{user}/{pass}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public AdministratorDTO getAdminInfo(@PathParam("user") String user, @PathParam("pass") String pass) {
-        Administrator administrator = adminService.SignIn(user, pass);
-         AdministratorDTO adminstratorDTO = new AdministratorDTO();
-        if(administrator == null){
-            adminstratorDTO = new AdministratorDTO("Failed","user or pass error",administrator);//
-        } else {
-            adminstratorDTO = new AdministratorDTO("Success","SignIn Success",administrator);//
-        }
-        return adminstratorDTO;
-    }
-    
-    @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Administrator find(@PathParam("id") Long id) {
+    public User find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Administrator> findAll() {
+    public List<User> findAll() {
         return super.findAll();
+    }
+
+    @GET
+    @Path("{from}/{to}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        return super.findRange(new int[]{from, to});
     }
 
     @GET
