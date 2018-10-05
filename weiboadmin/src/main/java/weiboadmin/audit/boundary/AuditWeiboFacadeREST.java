@@ -53,31 +53,12 @@ public class AuditWeiboFacadeREST extends AbstractFacade<AuditWeibo> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public AuditWeiboDTO edit(@PathParam("id") Long id, AuditWeibo entity) {//
-        try {
-            em.getTransaction().begin();
-            int aNum = em.createQuery("update AuditWeibo a set a.isAudited = true where a.weiboId= :weiboId")
-                    .setParameter("weiboId", id)
-                    .executeUpdate();
-            if (aNum != 1) {
-                em.getTransaction().rollback();
-                return new AuditWeiboDTO("Failed", "Ban Weibo Failed");
-            }
-            int wNum = em.createQuery("update Weibo w set w.isBaned = true where w.id= :id")
-                    .setParameter("id", id)
-                    .executeUpdate();
-            if (wNum != 1) {
-                em.getTransaction().rollback();
-                return new AuditWeiboDTO("Failed", "Ban Weibo Failed");
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            System.out.println("" + e);
-            em.getTransaction().rollback();
-            return new AuditWeiboDTO("Failed", "Ban Weibo Failed");
-        } finally {
-            em.close();
+        try{
+            super.edit(entity);
+        }catch(Exception e){
+            return new AuditWeiboDTO("Failed", "Update Weibo Failed");
         }
-        return new AuditWeiboDTO("Success", "Ban Weibo Success");
+        return new AuditWeiboDTO("Success", "Update Weibo Success");
     }
 
     @DELETE
