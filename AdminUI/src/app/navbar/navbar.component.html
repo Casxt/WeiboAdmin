@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" routerLink="/">WeiboAdmin</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto" *ngIf="administrator!==null">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">统计面板</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/unaudit" routerLinkActive="active">未审核</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/audit" routerLinkActive="active">已审核</a>
+      </li>
+    </ul>
+    <a routerLink="/signin" class="btn btn-outline-success" *ngIf="administrator===null">
+      SignIn
+    </a>
+    <span class="btn btn-outline-success" *ngIf="administrator!==null">
+      {{administrator.nickname}}
+    </span>
+  </div>
+</nav>

@@ -1,0 +1,16 @@
+<main class="container mt-5">
+  <div class="list-group">
+    <div class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let auditWeibo of auditWeiboArray">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{auditWeibo.weibo.userId.nickname}}</h5>
+        <small>id:{{auditWeibo.weibo.id}} </small>
+        <span class="badge badge-danger" *ngIf="auditWeibo.weibo.isDeleted===true">被删除</span>
+        <span class="badge badge-warning" *ngIf="auditWeibo.weibo.isBaned===true">被封禁</span>
+        <small>date:{{auditWeibo.weibo.weiboDate}}</small>
+      </div>
+      <p class="mb-1">{{auditWeibo.weibo.content}}</p>
+      <button type="button" class="btn btn-sm btn-danger mx-1" (click)="RecoverWeibo(auditWeibo)">恢复</button>
+      <button type="button" class="btn btn-sm btn-warning mx-1" (click)="UnbanWeibo(auditWeibo)">解封</button>
+    </div>
+  </div>
+</main>
