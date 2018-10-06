@@ -7,6 +7,8 @@ package weiboadmin.audit.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -23,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Surface
  */
 @Entity
+@Cacheable(false)
 @Table(name = "audit_weibo", schema = "public")
 @XmlRootElement
 @NamedQueries({
@@ -41,8 +45,8 @@ public class AuditWeibo implements Serializable {
     @NotNull
     @Column(name = "is_audited")
     private boolean isAudited;
-    @JoinColumn(name = "weibo_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @OneToOne(optional = false)
+    @PrimaryKeyJoinColumn(name = "weibo_id", referencedColumnName = "id")
+    @OneToOne(optional = false, cascade=CascadeType.ALL)
     private Weibo weibo;
 
     public AuditWeibo() {
