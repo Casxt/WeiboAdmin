@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -49,6 +49,38 @@ export class AdministratorService implements CanActivate {
      */
     GetAdministrator(): Observable<Administrator> {
         return this.administratorObsv.asObservable();
+    }
+
+    CreateAdministrator(nickname: string, pass: string): Observable<string> {
+        const upass = new TextEncoder().encode(pass);
+        const hashUArray = sha256(upass);
+        const newAdmin = new Administrator();
+        newAdmin.nickname = nickname;
+        newAdmin.hashPass = this.hexdump(hashUArray);
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        const res: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+        this.http.put<AdministratorDTO>(`/api/administrator/`, JSON.stringify(newAdmin), httpOptions)
+            .subscribe(
+                resp => {
+                    console.log(resp);
+                    if (resp.state === 'Success') {
+                        res.next('创建成功');
+                    } else {
+                        res.next('创建失败');
+                    }
+                },
+                error => {
+                    console.log(error);
+                    res.next('创建失败');
+                }
+            );
+        return res.asObservable();
     }
 
     /**

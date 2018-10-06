@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SigninComponent } from './signin/signin.component';
 import { UnauditComponent } from './unaudit/unaudit.component';
+import { CreateAdministratorComponent } from './create-administrator/create-administrator.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +17,8 @@ import { UnauditComponent } from './unaudit/unaudit.component';
     SigninComponent,
     DashboardComponent,
     UnauditComponent,
-    AuditComponent
+    AuditComponent,
+    CreateAdministratorComponent
   ],
   imports: [
     BrowserModule,
