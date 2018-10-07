@@ -31,7 +31,7 @@ import weiboadmin.AbstractFacade;
  */
 @Stateless
 @Path("administrator")
-public class AdministratorFacadeREST extends AbstractFacade<Administrator> {
+public class AdministratorFacadeREST {
 
     @PersistenceContext(unitName = "weiboadmin_weiboadmin_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -39,44 +39,59 @@ public class AdministratorFacadeREST extends AbstractFacade<Administrator> {
     AdminService adminService;
 
     public AdministratorFacadeREST() {
-        super(Administrator.class);
+        //super(Administrator.class);
     }
 
+    /**
+     * 创建管理员账号
+     * @param administrator
+     * @return 
+     */
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Administrator entity) {
-        super.create(entity);
+    public AdministratorDTO create(Administrator administrator) {
+        try {
+            em.persist(administrator);
+            em.flush();
+            return new AdministratorDTO("Success", "create admin success", administrator);//
+        } catch (Exception e) {
+            return new AdministratorDTO("Failed", "create admin error", administrator);
+        }
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Long id, Administrator entity) {
-        super.edit(entity);
+        em.merge(entity);
         em.flush();
     }
 
+    /*
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
         super.remove(super.find(id));
     }
-
+     */
+    /**
+     * 用户登陆
+     * @param user
+     * @param pass
+     * @return 
+     */
     @GET
     @Path("{user}/{pass}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public AdministratorDTO getAdminInfo(@PathParam("user") String user, @PathParam("pass") String pass) {
         Administrator administrator = adminService.SignIn(user, pass);
-         AdministratorDTO adminstratorDTO = new AdministratorDTO();
-        if(administrator == null){
-            adminstratorDTO = new AdministratorDTO("Failed","user or pass error",administrator);//
-        } else {
-            adminstratorDTO = new AdministratorDTO("Success","SignIn Success",administrator);//
+        if (administrator == null) {
+            return new AdministratorDTO("Failed", "user or pass error", administrator);//
         }
-        return adminstratorDTO;
+        return new AdministratorDTO("Success", "SignIn Success", administrator);//
     }
-    
+
+    /*
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -102,5 +117,6 @@ public class AdministratorFacadeREST extends AbstractFacade<Administrator> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+*/
+
 }

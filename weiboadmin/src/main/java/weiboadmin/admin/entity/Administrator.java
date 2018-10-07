@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -45,7 +46,7 @@ public class Administrator implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    //@Basic(optional = false)
     @Column(name = "id")
     private Long id;
     @Basic(optional = false)
@@ -62,9 +63,10 @@ public class Administrator implements Serializable {
     @NotNull
     @Column(name = "is_delete")
     private boolean isDelete;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "administrator_date")
+    //@Basic(optional = false)
+    //@NotNull
+    //@CreationTimestamp
+    @Column(name = "administrator_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date administratorDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
@@ -83,6 +85,11 @@ public class Administrator implements Serializable {
         this.hashPass = hashPass;
         this.isDelete = isDelete;
         this.administratorDate = administratorDate;
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+    administratorDate = new Date();
     }
 
     public Long getId() {
