@@ -57,7 +57,7 @@ export class AdministratorService implements CanActivate {
         const newAdmin = new Administrator();
         newAdmin.nickname = nickname;
         newAdmin.hashPass = this.hexdump(hashUArray);
-
+        newAdmin.administratorDate = new Date().toLocaleTimeString();
         const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export class AdministratorService implements CanActivate {
         };
 
         const res: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-        this.http.put<AdministratorDTO>(`/api/administrator/`, JSON.stringify(newAdmin), httpOptions)
+        this.http.post<AdministratorDTO>(`/api/administrator/`, JSON.stringify(newAdmin), httpOptions)
             .subscribe(
                 resp => {
                     console.log(resp);

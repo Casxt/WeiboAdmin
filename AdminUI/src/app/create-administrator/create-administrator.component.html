@@ -12,7 +12,7 @@
           <label for="InputPassword">密码</label>
           <input type="password" class="form-control" [(ngModel)]="formPass" name="formPass" placeholder="Password" id="InputPassword">
         </div>
-        <button type="button" class="btn btn-primary" (click)="onCreateAdministrator()">创建</button>
+        <button type="button" class="btn btn-primary" (click)="onCreateAdministrator()" [class.disabled]="disableButton">{{buttonMsg}}</button>
       </form>
     </div>
   </div>

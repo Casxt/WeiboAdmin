@@ -9,19 +9,25 @@ import { AdministratorService } from '../administrator.service';
 export class CreateAdministratorComponent implements OnInit {
   formUser: string;
   fromPass: string;
-  createRes: string;
+  disableButton: boolean;
+  buttonMsg: string;
   constructor(private administratorService: AdministratorService) { }
 
   ngOnInit() {
+    this.disableButton = false;
+    this.buttonMsg = '创建';
   }
 
   onCreateAdministrator(): void {
     this.administratorService.CreateAdministrator(this.formUser, this.fromPass)
       .subscribe(
         (res: string) => {
-          this.createRes = res;
+          this.buttonMsg = res;
+          this.disableButton = true;
+          setTimeout(() => { this.ngOnInit(); }, 1000);
         }
       );
+
   }
 
 }
