@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { Weibo, WeiboDTO, AuditWeibo } from './weibo';
+import { Weibo, WeiboDTO, AuditWeibo, WeiboStaticDTO, WeiboStatic } from './weibo';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,6 +32,10 @@ export class WeiboService {
     return weiboArrayObsv.asObservable();
   }
 
+  /**
+   * 封禁微博
+   * @param auditWeibo 要封禁的微博
+   */
   BanWeibo(auditWeibo: AuditWeibo): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -52,6 +56,10 @@ export class WeiboService {
     return res.asObservable();
   }
 
+  /**
+   * 删除微博
+   * @param auditWeibo 要删除的微博
+   */
   DeleteWeibo(auditWeibo: AuditWeibo): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -72,6 +80,10 @@ export class WeiboService {
     return res.asObservable();
   }
 
+  /**
+   * 解封微博
+   * @param auditWeibo 要解封的微博
+   */
   UnbanWeibo(auditWeibo: AuditWeibo): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -92,6 +104,10 @@ export class WeiboService {
     return res.asObservable();
   }
 
+  /**
+   * 取消删除
+   * @param auditWeibo 要恢复的对象
+   */
   RecoverWeibo(auditWeibo: AuditWeibo): Observable<boolean> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -110,5 +126,26 @@ export class WeiboService {
         }
       );
     return res.asObservable();
+  }
+
+  /**
+   * 获取微博统计信息
+   */
+  GetWeiboStaticInfo(): Observable<WeiboStatic[]> {
+    const res: BehaviorSubject<WeiboStatic[]> = new BehaviorSubject<WeiboStatic[]>([]);
+    this.http.get<WeiboStaticDTO>(`/api/weibo/count`)
+      .subscribe(
+        resp => {
+          if (resp.state !== 'Success') {
+            res.next(new Array());
+          }
+          res.next(resp.weiboTimeCount);
+        },
+        error => {
+          console.log(error);
+          res.next(new Array());
+        }
+      );
+      return res;
   }
 }

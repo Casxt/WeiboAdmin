@@ -48,6 +48,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Weibo.findByIsBaned", query = "SELECT w FROM Weibo w WHERE w.isBaned = :isBaned")})
 public class Weibo implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "weiboId")
+    private Collection<Comment> commentCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -208,6 +211,15 @@ public class Weibo implements Serializable {
     @Override
     public String toString() {
         return "weiboadmin.audit.entity.Weibo[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Comment> getCommentCollection() {
+        return commentCollection;
+    }
+
+    public void setCommentCollection(Collection<Comment> commentCollection) {
+        this.commentCollection = commentCollection;
     }
     
 }

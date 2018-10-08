@@ -19,13 +19,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import weiboadmin.audit.entity.User;
-import weiboadmin.AbstractFacade;
+
 /**
  *
  * @author Surface
  */
 @Stateless
-@Path("user")
+@Path("weiboadmin.audit.entity.user")
 public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "weiboadmin_weiboadmin_war_1.0-SNAPSHOTPU")

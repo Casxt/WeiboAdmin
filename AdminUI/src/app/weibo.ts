@@ -20,3 +20,14 @@ export class WeiboDTO {
     msg: string;
     auditWeibo: AuditWeibo[];
 }
+
+export class WeiboStatic {
+    count: Number;
+    time: Date;
+}
+
+export class WeiboStaticDTO {
+    msg: string;
+    state: string;
+    weiboTimeCount: WeiboStatic[];
+}

@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SigninComponent } from './signin/signin.component';
 import { UnauditComponent } from './unaudit/unaudit.component';
 import { CreateAdministratorComponent } from './create-administrator/create-administrator.component';
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { CreateAdministratorComponent } from './create-administrator/create-admi
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
