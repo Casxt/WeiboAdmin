@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { Weibo, WeiboDTO, AuditWeibo, WeiboStaticDTO, WeiboStatic } from './weibo';
+import { Weibo, WeiboDTO, AuditWeibo, WeiboStaticDTO, WeiboStatic, CommentStaticDTO, CommentStatic } from './weibo';
 @Injectable({
   providedIn: 'root'
 })
@@ -140,6 +140,27 @@ export class WeiboService {
             res.next(new Array());
           }
           res.next(resp.weiboTimeCount);
+        },
+        error => {
+          console.log(error);
+          res.next(new Array());
+        }
+      );
+      return res;
+  }
+
+  /**
+   * 获取微博评论统计信息
+   */
+  GetCommentStaticInfo(): Observable<CommentStatic[]> {
+    const res: BehaviorSubject<CommentStatic[]> = new BehaviorSubject<CommentStatic[]>([]);
+    this.http.get<CommentStaticDTO>(`/api/comment/count`)
+      .subscribe(
+        resp => {
+          if (resp.state !== 'Success') {
+            res.next(new Array());
+          }
+          res.next(resp.commentTimeCount);
         },
         error => {
           console.log(error);

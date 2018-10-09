@@ -31,3 +31,14 @@ export class WeiboStaticDTO {
     state: string;
     weiboTimeCount: WeiboStatic[];
 }
+
+export class CommentStatic {
+    count: Number;
+    time: Date;
+}
+
+export class CommentStaticDTO {
+    msg: string;
+    state: string;
+    commentTimeCount: CommentStatic[];
+}

@@ -9,8 +9,9 @@
         <small>date:{{auditWeibo.weibo.weiboDate}}</small>
       </div>
       <p class="mb-1">{{auditWeibo.weibo.content}}</p>
-      <button type="button" class="btn btn-sm btn-danger mx-1" (click)="DeleteWeibo(auditWeibo)">删除</button>
-      <button type="button" class="btn btn-sm btn-warning mx-1" (click)="BanWeibo(auditWeibo)">封禁</button>
+      <button type="button" class="btn btn-sm btn-danger mx-1" (click)="DeleteWeibo(auditWeibo);">删除</button>
+      <button type="button" class="btn btn-sm btn-warning mx-1" (click)="BanWeibo(auditWeibo);">封禁</button>
     </div>
   </div>
+  <button type="button" class="btn btn-primary btn-lg btn-block mt-2" (click)="GetUnauditWeibo();">加载更多</button>
 </main>

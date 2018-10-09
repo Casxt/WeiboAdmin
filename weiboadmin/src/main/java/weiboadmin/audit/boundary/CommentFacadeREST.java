@@ -5,6 +5,9 @@
  */
 package weiboadmin.audit.boundary;
 
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,67 +28,27 @@ import weiboadmin.audit.entity.Comment;
  * @author Surface
  */
 @Stateless
-@Path("weiboadmin.audit.entity.comment")
-public class CommentFacadeREST extends AbstractFacade<Comment> {
+@Path("comment")
+public class CommentFacadeREST {
 
     @PersistenceContext(unitName = "weiboadmin_weiboadmin_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
     public CommentFacadeREST() {
-        super(Comment.class);
     }
-
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Comment entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Comment entity) {
-        super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Comment find(@PathParam("id") Long id) {
-        return super.find(id);
-    }
-
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Comment> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Comment> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
     @GET
     @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public CommentTimeCountDTO countREST() {
+        List<CommentTimeCount> commentTimeCount = new LinkedList<>();
+        List<Object> resultList = em.createQuery("SELECT COUNT( c.id ) AS num, FUNC('DATE_TRUNC_SECOND', c.commentDate) AS time FROM Comment c GROUP BY time ORDER BY time")
+                .getResultList();
+        for (Iterator iterator = resultList.iterator(); iterator.hasNext();) {
+            Object[] result = (Object[]) iterator.next();
+            Integer count = ((Long) result[0]).intValue();
+            Date time = (Date) result[1];
+            commentTimeCount.add(new CommentTimeCount(count, time));
+        }
+        return new CommentTimeCountDTO("Success", "Get Time Count Success", commentTimeCount);
     }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

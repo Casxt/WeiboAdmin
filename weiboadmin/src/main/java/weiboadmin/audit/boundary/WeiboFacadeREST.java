@@ -41,7 +41,7 @@ public class WeiboFacadeREST{
     public WeiboFacadeREST() {
         //super(Weibo.class);
     }
-        @GET
+    @GET
     @Path("count")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public WeiboTimeCountDTO countREST() {
@@ -69,7 +69,7 @@ GROUP BY
             Date time = (Date) result[1];
             weiboTimeCount.add(new WeiboTimeCount(count, time));
         }
-        return new WeiboTimeCountDTO("Success","Get Time Count Success", weiboTimeCount);
+        return new WeiboTimeCountDTO("Success", "Get Time Count Success", weiboTimeCount);
         //return em.createQuery("SELECT COUNT(w), SQL('DATE_TRUNC('second', ?)', w.weiboDate) AS t  FROM Weibo w GROUP BY t")
         //        .getResultList();
     }
